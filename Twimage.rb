@@ -4,18 +4,27 @@ class Twimage
 	end
 
 	def fetch()
-		html = Nokogiri::HTML(open(@request_url))
-		spans = html.xpath('//*[@id="stream-items-id"]/div/span')
-		
-		image_urls = []
-		spans.each do |span|
-			image_urls << span.get_attribute('data-resolved-url-small')
-		end
+		uri = URI.parse(@request_url)
+		request = Net::HTTP::Get.new(uri.request_url)
+		http = Net::HTTP.new(uri.host, uri.port)
+		http.use_ssl = true
+		response = http.request(request)
 
-		image_ursl
+		#content-typeを取得
+		content_type = response['content-type'].split(';')[0]
+		#HTMLとJSONで処理を分ける
+		if content_type == 'text/html' do
+			
+		elsif content_type == 'text/json' do
+			
+		end
 	end
 
 	def iterator()
 		Twiterator.new(self)
+	end
+
+	private content_type?
+
 	end
 end

@@ -9,6 +9,6 @@ class Twiterator
 	end
 
 	def next
-		res = @twimage.fetch()
+		image_urls = @twimage.fetch()
 	end
 end
