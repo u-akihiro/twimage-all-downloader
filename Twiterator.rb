@@ -13,6 +13,8 @@ class Twiterator
 		if result['more'] then
 			@has_next = true
 			@twimage.set_request_url(result['next_url'])
+		else
+			@has_next = false
 		end
 
 		return result
