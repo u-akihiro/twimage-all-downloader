@@ -8,6 +8,11 @@ class Download
 
 	def set_store_dir(dir_path)
 		@dir_path = dir_path
+		#指定されたディレクトリが存在しなければ作成する
+		if !File.exists?(dir_path) then
+			puts dir_path
+			Dir::mkdir(dir_path, 0777)
+		end
 	end
 
 	def down()
