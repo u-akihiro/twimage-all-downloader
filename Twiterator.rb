@@ -9,6 +9,12 @@ class Twiterator
 	end
 
 	def next
-		image_urls = @twimage.fetch()
+		result = @twimage.fetch()
+		if result['more'] then
+			@has_next = true
+			@twimage.set_request_url(result['next_url'])
+		end
+
+		return result
 	end
 end

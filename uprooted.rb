@@ -4,17 +4,22 @@ require 'net/http'
 require 'json'
 require './download.rb'
 require './Twimage.rb'
-require './Twierator.rb'
+require './Twiterator.rb'
+require './parser.rb'
 
 Bundler.require
 
-html = Nokogiri::HTML(open("https://twitter.com/jkhiplove/media"))
-spans = html.xpath('//*[@id="stream-items-id"]/div/span')
-spans.each do |span|
-	image_url = span.get_attribute('data-resolved-url-small')
-	puts image_url
-	download = Download.new
-	download.set_download_url(image_url)
-	download.set_store_dir('./image/')
-	download.down
+twimage = Twimage.new
+twiterator = twimage.iterator
+
+twimage.set_target_account(ARGV[0])
+download = Download.new
+download.set_store_dir('./image/')
+while twiterator.has_next? do
+	result = twiterator.next
+	result['image_urls'].each do |image_url|
+		puts image_url
+		download.set_download_url(image_url)
+		download.down()
+	end
 end
